@@ -1,5 +1,3 @@
-# Conky Google Now style #
-
 # Conky settings #
 background no
 update_interval 1
@@ -41,10 +39,10 @@ imlib_cache_size 0
 # Color scheme #
 default_color 666666
 
-color1 0099CC
+color1 006E09
 color2 9933CC
 color3 669900
-color4 FF8800
+color4 FF4800
 color5 CC0000
 color6 AAAAAA
 color7 DDDDDD

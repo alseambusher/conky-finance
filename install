@@ -18,6 +18,6 @@ for stock in $(cat stocks.conf)
 do
 	echo '${execi 300  curl -s "http://download.finance.yahoo.com/d/quotes.csv?s='$stock'&f=c" >~/.cache/conv}' >>conkyrc
 	echo '${font Roboto-Light:size=15}'$stock'${alignr}${execi 300 curl -s "http://download.finance.yahoo.com/d/quotes.csv?s='$stock'&f=l1"}${font}' >> conkyrc
-	echo '${font Roboto-Light:size=15}${execi 300 cut -d "\"" -f2 ~/.cache/conv}${font}' >>conkyrc
+	echo '${font Roboto-Light:size=15}${if_match ${execi 300 cut -d "\"" -f2 ~/.cache/conv| cut -d " " -f1} > 0}${color1}${else}${color4}${endif}${execi 300 cut -d "\"" -f2 ~/.cache/conv}${color}${font}' >>conkyrc
 done
 mv conkyrc ~/.conkyrc
