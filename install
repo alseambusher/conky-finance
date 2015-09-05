@@ -1,11 +1,4 @@
 #!/bin/bash
-
-read -e -p "Do you want to install font " -i "(Y/N):" INPUT
-if [ $INPUT = "Y" ]
-then
-	./install-fonts
-fi
-
 cp template conkyrc
 
 find currency.conf/ \( ! -regex '.*/\..*' \) -type f -printf "%f\n"| while read _file

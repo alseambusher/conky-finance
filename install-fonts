@@ -2,8 +2,8 @@
 
 #install roboto
 wget https://material-design.storage.googleapis.com/publish/material_v_4/material_ext_publish/0B0J8hsRkk91LRjU4U1NSeXdjd1U/RobotoTTF.zip
-unzip RobotoTTF.zip
+unzip RobotoTTF.zip -d RobotoTTF
 mkdir -p ~/.fonts
-mv RobotoTTF/* ~/.fonts
+mv RobotoTTF/Roboto-Light.ttf ~/.fonts/
 rm -rf RobotoTTF RobotoTTF.zip
 fc-cache -fv
