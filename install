@@ -1,0 +1,30 @@
+#!/bin/bash
+
+read -e -p "Do you want to install font " -i "(Y/N):" INPUT
+if [ $INPUT = "Y" ]
+then
+	./install-fonts
+fi
+
+cp template conkyrc
+
+find currency.conf/ \( ! -regex '.*/\..*' \) -type f -printf "%f\n"| while read _file
+do
+	echo '${font Roboto-Light:size=20}${alignc}1 '$_file'${font}${voffset 10}' >> conkyrc
+	currency1=$(cat "currency.conf/$_file" | head -n1)
+	for currency2 in $(cat "currency.conf/$_file" | tail -n +2)
+	do
+		echo '${execi 300 curl -s "http://www.google.com/finance/converter?a=1&from='$currency1'&to='$currency2'" -o ~/.cache/conv}${font Roboto-Light:size=15}${execi 300  grep -m 1 "value=\"'$currency2'" ~/.cache/conv| cut -d ">" -f2|cut -d "<" -f1 |cut -d "(" -f1}${alignr}${execi 300 awk -F"[ >]" '"'"'/<div id=currency_converter_result>/ {printf "%.3f\n",$8}'"'"' ~/.cache/conv}${font}' >> conkyrc
+	done
+
+	echo '${color7}${hr}${color}' >> conkyrc
+done
+
+echo '${font Roboto-Light:size=20}${alignc}Stocks Today${font}${voffset 10}' >> conkyrc
+for stock in $(cat stocks.conf)
+do
+	echo '${execi 300  curl -s "http://download.finance.yahoo.com/d/quotes.csv?s='$stock'&f=c" >~/.cache/conv}' >>conkyrc
+	echo '${font Roboto-Light:size=15}'$stock'${alignr}${execi 300 curl -s "http://download.finance.yahoo.com/d/quotes.csv?s='$stock'&f=l1"}${font}' >> conkyrc
+	echo '${font Roboto-Light:size=15}${execi 300 cut -d "\"" -f2 ~/.cache/conv}${font}' >>conkyrc
+done
+mv conkyrc ~/.conkyrc
